@@ -1,16 +1,676 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA — Luxury Hoodies Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #ffffff;
+      color: #0d0d0d;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation */
+    header {
+      padding: 30px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #777;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: #0d0d0d;
+    }
+
+    .cart-btn {
+      background: none;
+      border: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-count {
+      background-color: #0d0d0d;
+      color: #fff;
+      font-size: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Main Showcase Area */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 100px;
+      padding-bottom: 40px;
+    }
+
+    .hero-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-title h1 {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    /* Continuous Rail Container */
+    .rack-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      padding: 0 40px;
+    }
+
+    /* Horizontal Hanging Bar */
+    .rail-bar {
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #d8d8d8, #1a1a1a, #d8d8d8);
+      border-radius: 3px;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .rail-bar::before, .rail-bar::after {
+      content: '';
+      position: absolute;
+      top: -20px;
+      width: 2px;
+      height: 20px;
+      background-color: #999;
+    }
+    .rail-bar::before { left: 10%; }
+    .rail-bar::after { right: 10%; }
+
+    /* Hoodies Row */
+    .hoodies-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      perspective: 1000px;
+    }
+
+    /* Hoodie Item Card */
+    .hoodie-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    /* Metallic Hanger */
+    .hanger {
+      width: 120px;
+      height: 45px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hanger-hook {
+      width: 16px;
+      height: 22px;
+      border: 2px solid #333;
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+      margin: 0 auto;
+      position: relative;
+      top: -4px;
+    }
+
+    .hanger-shoulder {
+      width: 100%;
+      height: 8px;
+      border-top: 3px solid #333;
+      border-radius: 50% 50% 0 0;
+    }
+
+    /* 3D Rotating Garment Container */
+    .garment-wrapper {
+      width: 100%;
+      height: 380px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      margin-top: -25px;
+    }
+
+    /* Hover State: Side View rotates to Front View */
+    .hoodie-card:hover .garment-wrapper {
+      transform: rotateY(0deg) scale(1.05);
+    }
+
+    /* Side View (Default) */
+    .garment-wrapper {
+      transform: rotateY(70deg) scale(0.95);
+    }
+
+    .garment-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+      transition: opacity 0.4s ease;
+    }
+
+    .side-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 1;
+    }
+
+    .front-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+    }
+
+    .hoodie-card:hover .side-img {
+      opacity: 0;
+    }
+
+    .hoodie-card:hover .front-img {
+      opacity: 1;
+    }
+
+    /* Product Meta Info */
+    .product-info {
+      text-align: center;
+      margin-top: 15px;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .hoodie-card:hover .product-info {
+      opacity: 1;
+    }
+
+    .product-name {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .modal-gallery {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-main-img {
+      width: 100%;
+      height: 420px;
+      object-fit: contain;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .toggle-btn {
+      padding: 8px 24px;
+      border: 1px solid #ddd;
+      background: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .toggle-btn.active {
+      background-color: #0d0d0d;
+      color: #fff;
+      border-color: #0d0d0d;
+    }
+
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .modal-price {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .modal-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .size-selector {
+      margin-bottom: 30px;
+    }
+
+    .size-label {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .size-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      background: none;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .size-btn:hover, .size-btn.active {
+      border-color: #0d0d0d;
+      background-color: #0d0d0d;
+      color: #fff;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 16px;
+      background-color: #0d0d0d;
+      color: #fff;
+      border: none;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: #333;
+    }
+
+    /* Footer */
+    footer {
+      padding: 30px;
+      text-align: center;
+      font-size: 11px;
+      color: #aaa;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
-<p class="p1">/Users/noyalbahary/Downloads/code_artifact.html</p>
+
+  <header>
+    <div class="brand">A U R A</div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Collection</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Stores</a></li>
+    </ul>
+    <button class="cart-btn" onclick="toggleCart()">
+      BAG <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main>
+    <div class="hero-title">
+      <h1>Heavyweight Minimalist Hoodies</h1>
+    </div>
+
+    <div class="rack-container">
+      <!-- Metallic Rail -->
+      <div class="rail-bar"></div>
+
+      <!-- 6 Hoodies Row -->
+      <div class="hoodies-row">
+
+        <!-- Hoodie 1 -->
+        <div class="hoodie-card" onclick="openModal(0)">
+          <div class="hanger">
+            <div class="hanger-hook"></div>
+            <div class="hanger-shoulder"></div>
+          </div>
+          <div class="garment-wrapper">
+            <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=80" class="garment-image side-img" alt="Side View">
+            <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=80" class="garment-image front-img" alt="Front View">
+          </div>
+          <div class="product-info">
+            <div class="product-name">Onyx Black</div>
+            <div class="product-price">$220</div>
+          </div>
+        </div>
+
+        <!-- Hoodie 2 -->
+        <div class="hoodie-card" onclick="openModal(1)">
+          <div class="hanger">
+            <div class="hanger-hook"></div>
+            <div class="hanger-shoulder"></div>
+          </div>
+          <div class="garment-wrapper">
+            <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=600&auto=format&fit=crop&q=80" class="garment-image side-img" alt="Side View">
+            <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=600&auto=format&fit=crop&q=80" class="garment-image front-img" alt="Front View">
+          </div>
+          <div class="product-info">
+            <div class="product-name">Raw Cream</div>
+            <div class="product-price">$240</div>
+          </div>
+        </div>
+
+        <!-- Hoodie 3 -->
+        <div class="hoodie-card" onclick="openModal(2)">
+          <div class="hanger">
+            <div class="hanger-hook"></div>
+            <div class="hanger-shoulder"></div>
+          </div>
+          <div class="garment-wrapper">
+            <img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=600&auto=format&fit=crop&q=80" class="garment-image side-img" alt="Side View">
+            <img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=600&auto=format&fit=crop&q=80" class="garment-image front-img" alt="Front View">
+          </div>
+          <div class="product-info">
+            <div class="product-name">Slate Grey</div>
+            <div class="product-price">$220</div>
+          </div>
+        </div>
+
+        <!-- Hoodie 4 -->
+        <div class="hoodie-card" onclick="openModal(3)">
+          <div class="hanger">
+            <div class="hanger-hook"></div>
+            <div class="hanger-shoulder"></div>
+          </div>
+          <div class="garment-wrapper">
+            <img src="https://images.unsplash.com/photo-1544441893-675973e31985?w=600&auto=format&fit=crop&q=80" class="garment-image side-img" alt="Side View">
+            <img src="https://images.unsplash.com/photo-1544441893-675973e31985?w=600&auto=format&fit=crop&q=80" class="garment-image front-img" alt="Front View">
+          </div>
+          <div class="product-info">
+            <div class="product-name">Earth Taupe</div>
+            <div class="product-price">$230</div>
+          </div>
+        </div>
+
+        <!-- Hoodie 5 -->
+        <div class="hoodie-card" onclick="openModal(4)">
+          <div class="hanger">
+            <div class="hanger-hook"></div>
+            <div class="hanger-shoulder"></div>
+          </div>
+          <div class="garment-wrapper">
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=600&auto=format&fit=crop&q=80" class="garment-image side-img" alt="Side View">
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=600&auto=format&fit=crop&q=80" class="garment-image front-img" alt="Front View">
+          </div>
+          <div class="product-info">
+            <div class="product-name">Olive Night</div>
+            <div class="product-price">$250</div>
+          </div>
+        </div>
+
+        <!-- Hoodie 6 -->
+        <div class="hoodie-card" onclick="openModal(5)">
+          <div class="hanger">
+            <div class="hanger-hook"></div>
+            <div class="hanger-shoulder"></div>
+          </div>
+          <div class="garment-wrapper">
+            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&auto=format&fit=crop&q=80" class="garment-image side-img" alt="Side View">
+            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&auto=format&fit=crop&q=80" class="garment-image front-img" alt="Front View">
+          </div>
+          <div class="product-info">
+            <div class="product-name">Deep Navy</div>
+            <div class="product-price">$220</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">✕</button>
+      
+      <div class="modal-gallery">
+        <img src="" id="modalImg" class="modal-main-img" alt="Product View">
+        <div class="view-toggle">
+          <button class="toggle-btn active" id="btnFront" onclick="switchView('front')">FRONT</button>
+          <button class="toggle-btn" id="btnBack" onclick="switchView('back')">BACK</button>
+        </div>
+      </div>
+
+      <div class="modal-details">
+        <h2 class="modal-title" id="modalTitle">Onyx Black Hoodie</h2>
+        <div class="modal-price" id="modalPrice">$220</div>
+        <p class="modal-desc">Crafted from 550GSM ultra-heavyweight organic French terry cotton. Double-layered hood, dropped shoulders, and ribbed trims for a structured boxy silhouette.</p>
+        
+        <div class="size-selector">
+          <span class="size-label">Select Size</span>
+          <div class="size-options">
+            <button class="size-btn" onclick="selectSize(this)">S</button>
+            <button class="size-btn active" onclick="selectSize(this)">M</button>
+            <button class="size-btn" onclick="selectSize(this)">L</button>
+            <button class="size-btn" onclick="selectSize(this)">XL</button>
+          </div>
+        </div>
+
+        <button class="add-to-cart-btn" onclick="addToCart()">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 AURA Studio — All Rights Reserved
+  </footer>
+
+  <script>
+    const products = [
+      {
+        name: "Onyx Black Hoodie",
+        price: "$220",
+        frontImg: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80",
+        backImg: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        name: "Raw Cream Hoodie",
+        price: "$240",
+        frontImg: "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=800&auto=format&fit=crop&q=80",
+        backImg: "https://images.unsplash.com/photo-1544441893-675973e31985?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        name: "Slate Grey Hoodie",
+        price: "$220",
+        frontImg: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&auto=format&fit=crop&q=80",
+        backImg: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        name: "Earth Taupe Hoodie",
+        price: "$230",
+        frontImg: "https://images.unsplash.com/photo-1544441893-675973e31985?w=800&auto=format&fit=crop&q=80",
+        backImg: "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        name: "Olive Night Hoodie",
+        price: "$250",
+        frontImg: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&auto=format&fit=crop&q=80",
+        backImg: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        name: "Deep Navy Hoodie",
+        price: "$220",
+        frontImg: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
+        backImg: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&auto=format&fit=crop&q=80"
+      }
+    ];
+
+    let currentProductIndex = 0;
+    let cartCount = 0;
+
+    function openModal(index) {
+      currentProductIndex = index;
+      const product = products[index];
+      document.getElementById('modalTitle').innerText = product.name;
+      document.getElementById('modalPrice').innerText = product.price;
+      switchView('front');
+      document.getElementById('productModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').classList.remove('active');
+    }
+
+    function switchView(view) {
+      const product = products[currentProductIndex];
+      const img = document.getElementById('modalImg');
+      const btnFront = document.getElementById('btnFront');
+      const btnBack = document.getElementById('btnBack');
+
+      if (view === 'front') {
+        img.src = product.frontImg;
+        btnFront.classList.add('active');
+        btnBack.classList.remove('active');
+      } else {
+        img.src = product.backImg;
+        btnBack.classList.add('active');
+        btnFront.classList.remove('active');
+      }
+    }
+
+    function selectSize(btn) {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function addToCart() {
+      cartCount++;
+      document.getElementById('cartCount').innerText = cartCount;
+      closeModal();
+    }
+  </script>
 </body>
 </html>
